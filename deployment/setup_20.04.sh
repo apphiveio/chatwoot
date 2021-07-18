@@ -53,7 +53,7 @@ rvm autolibs disable
 rvm install "ruby-2.7.3"
 rvm use 2.7.3 --default
 
-git clone https://github.com/chatwoot/chatwoot.git
+git clone https://github.com/apphiveio/chatwoot.git
 cd chatwoot
 if [[ -z "$1" ]]; then
 git checkout master;
