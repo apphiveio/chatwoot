@@ -205,7 +205,7 @@ GEM
       faraday (~> 1.0)
     fcm (1.0.2)
       faraday (~> 1.0.0)
-    ffi (1.15.0)
+    ffi (1.15.3)
     flag_shih_tzu (0.3.23)
     foreman (0.87.2)
     fugit (1.4.1)
@@ -679,6 +679,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec
+  sassc (~> 2.1.0)
   scout_apm
   scss_lint
   seed_dump
