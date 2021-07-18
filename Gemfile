@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.7.3'
-
+gem 'sassc', '~> 2.1.0'
 ##-- base gems for rails --##
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails'
