@@ -24,8 +24,9 @@ const actions = {
     commit(types.default.SET_LIST_LOADING_STATUS);
     try {
       const response = await ConversationApi.get(params);
-      const { data } = response.data;
-      const { payload: chatList, meta: metaData } = data;
+      const {
+        data: { payload: chatList, meta: metaData },
+      } = response.data;
       commit(types.default.SET_ALL_CONVERSATION, chatList);
       dispatch('conversationStats/set', metaData);
       dispatch('conversationLabels/setBulkConversationLabels', chatList);
@@ -36,10 +37,7 @@ const actions = {
       );
       dispatch(
         'conversationPage/setCurrentPage',
-        {
-          filter: params.assigneeType,
-          page: params.page,
-        },
+        { filter: params.assigneeType, page: params.page },
         { root: true }
       );
       if (!chatList.length) {
@@ -69,10 +67,7 @@ const actions = {
       } = await MessageApi.getPreviousMessages(data);
       commit(
         `conversationMetadata/${types.default.SET_CONVERSATION_METADATA}`,
-        {
-          id: data.conversationId,
-          data: meta,
-        }
+        { id: data.conversationId, data: meta }
       );
       commit(types.default.SET_PREVIOUS_CONVERSATIONS, {
         id: data.conversationId,
@@ -135,22 +130,35 @@ const actions = {
     commit(types.default.ASSIGN_TEAM, team);
   },
 
-  toggleStatus: async ({ commit }, { conversationId, status }) => {
+  toggleStatus: async (
+    { commit },
+    { conversationId, status, snoozedUntil = null }
+  ) => {
     try {
-      const response = await ConversationApi.toggleStatus({
+      const {
+        data: {
+          payload: {
+            current_status: updatedStatus,
+            snoozed_until: updatedSnoozedUntil,
+          } = {},
+        } = {},
+      } = await ConversationApi.toggleStatus({
         conversationId,
         status,
+        snoozedUntil,
       });
-      commit(
-        types.default.RESOLVE_CONVERSATION,
-        response.data.payload.current_status
-      );
+      commit(types.default.CHANGE_CONVERSATION_STATUS, {
+        conversationId,
+        status: updatedStatus,
+        snoozedUntil: updatedSnoozedUntil,
+      });
     } catch (error) {
       // Handle error
     }
   },
 
   sendMessage: async ({ commit }, data) => {
+    // eslint-disable-next-line no-useless-catch
     try {
       const pendingMessage = createPendingMessage(data);
       commit(types.default.ADD_MESSAGE, pendingMessage);
@@ -160,7 +168,7 @@ const actions = {
         status: MESSAGE_STATUS.SENT,
       });
     } catch (error) {
-      // Handle error
+      throw error;
     }
   },
 
@@ -218,11 +226,7 @@ const actions = {
         data: { id, agent_last_seen_at: lastSeen },
       } = await ConversationApi.markMessageRead(data);
       setTimeout(
-        () =>
-          commit(types.default.MARK_MESSAGE_READ, {
-            id,
-            lastSeen,
-          }),
+        () => commit(types.default.MARK_MESSAGE_READ, { id, lastSeen }),
         4000
       );
     } catch (error) {

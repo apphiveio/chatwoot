@@ -5,7 +5,7 @@
 #  id                  :integer          not null, primary key
 #  content             :text
 #  content_attributes  :json
-#  content_type        :integer          default("text")
+#  content_type        :integer          default("text"), not null
 #  external_source_ids :jsonb
 #  message_type        :integer          not null
 #  private             :boolean          default(FALSE)
@@ -29,12 +29,16 @@
 #
 
 class Message < ApplicationRecord
+  include MessageFilterHelpers
   NUMBER_OF_PERMITTED_ATTACHMENTS = 15
+
+  before_validation :ensure_content_type
 
   validates :account_id, presence: true
   validates :inbox_id, presence: true
   validates :conversation_id, presence: true
   validates_with ContentAttributeValidator
+  validates :content_type, presence: true
 
   # when you have a temperory id in your frontend and want it echoed back via action cable
   attr_accessor :echo_id
@@ -81,9 +85,6 @@ class Message < ApplicationRecord
   has_many :attachments, dependent: :destroy, autosave: true, before_add: :validate_attachments_limit
   has_one :csat_survey_response, dependent: :destroy
 
-  after_create :reopen_conversation,
-               :notify_via_mail
-
   after_create_commit :execute_after_create_commit_callbacks
 
   after_update_commit :dispatch_update_event
@@ -105,12 +106,8 @@ class Message < ApplicationRecord
 
   def merge_sender_attributes(data)
     data.merge!(sender: sender.push_event_data) if sender && !sender.is_a?(AgentBot)
-    data.merge!(sender: sender.push_event_data(inbox)) if sender&.is_a?(AgentBot)
+    data.merge!(sender: sender.push_event_data(inbox)) if sender.is_a?(AgentBot)
     data
-  end
-
-  def reportable?
-    incoming? || outgoing?
   end
 
   def webhook_data
@@ -130,10 +127,23 @@ class Message < ApplicationRecord
     }
   end
 
+  def content
+    # move this to a presenter
+    return self[:content] if !input_csat? || inbox.web_widget?
+
+    I18n.t('conversations.survey.response', link: "#{ENV['FRONTEND_URL']}/survey/responses/#{conversation.uuid}")
+  end
+
   private
+
+  def ensure_content_type
+    self.content_type ||= Message.content_types[:text]
+  end
 
   def execute_after_create_commit_callbacks
     # rails issue with order of active record callbacks being executed https://github.com/rails/rails/issues/20911
+    reopen_conversation
+    notify_via_mail
     set_conversation_activity
     dispatch_create_events
     send_reply
@@ -142,7 +152,7 @@ class Message < ApplicationRecord
   end
 
   def update_contact_activity
-    sender.update(last_activity_at: DateTime.now) if sender&.is_a?(Contact)
+    sender.update(last_activity_at: DateTime.now) if sender.is_a?(Contact)
   end
 
   def dispatch_create_events
@@ -164,7 +174,10 @@ class Message < ApplicationRecord
   end
 
   def reopen_conversation
-    conversation.open! if incoming? && conversation.resolved? && !conversation.muted?
+    return if conversation.muted?
+    return unless incoming?
+
+    conversation.open! if conversation.resolved? || conversation.snoozed?
   end
 
   def execute_message_template_hooks
@@ -172,7 +185,7 @@ class Message < ApplicationRecord
   end
 
   def email_notifiable_message?
-    return false unless outgoing?
+    return false unless outgoing? || input_csat?
     return false if private?
 
     true
@@ -192,17 +205,15 @@ class Message < ApplicationRecord
   end
 
   def trigger_notify_via_mail
+    return EmailReplyWorker.perform_in(1.second, id) if inbox.inbox_type == 'Email'
+
     # will set a redis key for the conversation so that we don't need to send email for every new message
     # last few messages coupled together is sent every 2 minutes rather than one email for each message
     # if redis key exists there is an unprocessed job that will take care of delivering the email
     return if Redis::Alfred.get(conversation_mail_key).present?
 
-    Redis::Alfred.setex(conversation_mail_key, Time.zone.now)
-    if inbox.inbox_type == 'Email'
-      ConversationReplyEmailWorker.perform_in(2.seconds, conversation.id, Time.zone.now)
-    else
-      ConversationReplyEmailWorker.perform_in(2.minutes, conversation.id, Time.zone.now)
-    end
+    Redis::Alfred.setex(conversation_mail_key, id)
+    ConversationReplyEmailWorker.perform_in(2.minutes, conversation.id, id)
   end
 
   def conversation_mail_key

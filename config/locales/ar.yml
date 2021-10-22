@@ -27,10 +27,18 @@ ar:
       invalid_email: لقد قمت بإدخال عنوان بريد إلكتروني غير صالح
       email_already_exists: "لقد قمت بالفعل بتسجيل حساب سابقاً بالعنوان %{email}"
       failed: فشلت عملية التسجيل
+    contacts:
+      import:
+        failed: File is blank
   reports:
     period: فترة التبليغ %{since} إلى %{until}
     agent_csv:
       agent_name: Agent name
+      conversations_count: Conversations count
+      avg_first_response_time: Avg first response time (Minutes)
+      avg_resolution_time: Avg resolution time (Minutes)
+    team_csv:
+      team_name: اسم الفريق
       conversations_count: Conversations count
       avg_first_response_time: Avg first response time (Minutes)
       avg_resolution_time: Avg resolution time (Minutes)
@@ -47,7 +55,8 @@ ar:
       status:
         resolved: "تم تحديث حالة المحادثة لـ\"مغلقة\" بواسطة %{user_name}"
         open: "تم إعادة فتح المحادثة بواسطة %{user_name}"
-        bot: "Conversation was transferred to bot by %{user_name}"
+        pending: "Conversation was marked as pending by %{user_name}"
+        snoozed: "Conversation was snoozed by %{user_name}"
         auto_resolved: "تم وضع علامة على المحادثة كمحلولة من قبل بالنظام بسبب %{duration} أيام من عدم النشاط"
       assignee:
         self_assigned: "%{user_name} تم تعيينه تلقائياً لهذه المحادثة"
@@ -70,6 +79,11 @@ ar:
     reply:
       email_subject: "رسائل جديدة في هذه المحادثة"
       transcript_subject: "نص المحادثة"
+    survey:
+      response: "Please rate this conversation, %{link}"
+  contacts:
+    online:
+      delete: "%{contact_name} is Online, please try again later"
   integration_apps:
     slack:
       name: "Slack"

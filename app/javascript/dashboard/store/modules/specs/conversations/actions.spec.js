@@ -214,6 +214,31 @@ describe('#actions', () => {
     });
   });
 
+  describe('#toggleStatus', () => {
+    it('sends correct mutations if toggle status is successful', async () => {
+      axios.post.mockResolvedValue({
+        data: {
+          payload: {
+            conversation_id: 1,
+            current_status: 'snoozed',
+            snoozed_until: null,
+          },
+        },
+      });
+      await actions.toggleStatus(
+        { commit },
+        { conversationId: 1, status: 'snoozed' }
+      );
+      expect(commit).toHaveBeenCalledTimes(1);
+      expect(commit.mock.calls).toEqual([
+        [
+          'CHANGE_CONVERSATION_STATUS',
+          { conversationId: 1, status: 'snoozed', snoozedUntil: null },
+        ],
+      ]);
+    });
+  });
+
   describe('#assignTeam', () => {
     it('sends correct mutations if assignment is successful', async () => {
       axios.post.mockResolvedValue({

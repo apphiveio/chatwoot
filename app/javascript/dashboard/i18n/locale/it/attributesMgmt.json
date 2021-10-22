@@ -1,0 +1,85 @@
+{
+  "ATTRIBUTES_MGMT": {
+    "HEADER": "Attributi",
+    "HEADER_BTN_TXT": "Aggiungi Attributo",
+    "LOADING": "Recupero attributi",
+    "SIDEBAR_TXT": "<p><b>Attributi</b> <p>Un attributo personalizzato tiene traccia dei dati relativi ai tuoi contatti/conversazioni — come il piano di abbonamento, o quando hanno ordinato il primo oggetto, ecc. <br /><br />Per creare un Attributo, basta cliccare sul<b>Aggiungi Attributo.</b> Puoi anche modificare o eliminare un Attributo esistente facendo clic sul pulsante Modifica o Elimina.</p>",
+    "ADD": {
+      "TITLE": "Aggiungi Attributo",
+      "SUBMIT": "Crea",
+      "CANCEL_BUTTON_TEXT": "annulla",
+      "FORM": {
+        "NAME": {
+          "LABEL": "Nome Visualizzato",
+          "PLACEHOLDER": "Inserisci il nome da visualizzare",
+          "ERROR": "Il nome è obbligatorio"
+        },
+        "DESC": {
+          "LABEL": "Descrizione",
+          "PLACEHOLDER": "Inserire descrizione",
+          "ERROR": "Descrizione obbligatoria"
+        },
+        "MODEL": {
+          "LABEL": "Modello",
+          "PLACEHOLDER": "Seleziona un modello",
+          "ERROR": "Il modello è obbligatorio"
+        },
+        "TYPE": {
+          "LABEL": "Tipo",
+          "PLACEHOLDER": "Seleziona un tipo",
+          "ERROR": "Il tipo è obbligatorio"
+        },
+        "KEY": {
+          "LABEL": "Chiave"
+        }
+      },
+      "API": {
+        "SUCCESS_MESSAGE": "Attributo aggiunto con successo",
+        "ERROR_MESSAGE": "Impossibile creare un attributo, riprova più tardi"
+      }
+    },
+    "DELETE": {
+      "BUTTON_TEXT": "Cancellare",
+      "API": {
+        "SUCCESS_MESSAGE": "Attributo eliminato con successo.",
+        "ERROR_MESSAGE": "Impossibile eliminare l'attributo. Riprova."
+      },
+      "CONFIRM": {
+        "TITLE": "Sei sicuro di voler eliminare - %{attributeName}",
+        "PLACE_HOLDER": "Digita {attributeName} per confermare",
+        "MESSAGE": "L'eliminazione rimuoverà l'attributo",
+        "YES": "Cancellare ",
+        "NO": "annulla"
+      }
+    },
+    "EDIT": {
+      "TITLE": "Modifica attributo",
+      "UPDATE_BUTTON_TEXT": "Aggiornamento",
+      "API": {
+        "SUCCESS_MESSAGE": "Attributo aggiornato con successo",
+        "ERROR_MESSAGE": "Si è verificato un errore durante l'aggiornamento dell'attributo, per favore riprova"
+      }
+    },
+    "TABS": {
+      "HEADER": "Attributi Personalizzati",
+      "CONVERSATION": "Conversazioni",
+      "CONTACT": "Contatto"
+    },
+    "LIST": {
+      "TABLE_HEADER": [
+        "nome",
+        "Descrizione",
+        "Tipo",
+        "Chiave"
+      ],
+      "BUTTONS": {
+        "EDIT": "Modifica",
+        "DELETE": "Cancellare"
+      },
+      "EMPTY_RESULT": {
+        "404": "Non ci sono attributi creati",
+        "NOT_FOUND": "Non ci sono attributi configurati"
+      }
+    }
+  }
+}

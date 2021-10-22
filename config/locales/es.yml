@@ -27,10 +27,18 @@ es:
       invalid_email: Ha introducido un correo electrónico no válido
       email_already_exists: "Ya te has registrado en una cuenta con %{email}"
       failed: Registro fallido
+    contacts:
+      import:
+        failed: File is blank
   reports:
     period: Reportando el periodo desde %{since} hasta %{until}
     agent_csv:
       agent_name: Nombre del agente
+      conversations_count: Cantidad de conversaciones
+      avg_first_response_time: Promedio de tiempo de la primera respuesta (Minutos)
+      avg_resolution_time: Promedio de tiempo de resolución (Minutos)
+    team_csv:
+      team_name: Nombre del equipo
       conversations_count: Cantidad de conversaciones
       avg_first_response_time: Promedio de tiempo de la primera respuesta (Minutos)
       avg_resolution_time: Promedio de tiempo de resolución (Minutos)
@@ -47,7 +55,8 @@ es:
       status:
         resolved: "La conversación fue marcada por %{user_name}"
         open: "La conversación fue reabierta por %{user_name}"
-        bot: "La conversación fue transferida al botón por %{user_name}"
+        pending: "Conversation was marked as pending by %{user_name}"
+        snoozed: "Conversation was snoozed by %{user_name}"
         auto_resolved: "La conversación fue marcada por el sistema debido a %{duration} días de inactividad"
       assignee:
         self_assigned: "%{user_name} auto-asignado a esta conversación"
@@ -70,6 +79,11 @@ es:
     reply:
       email_subject: "Nuevos mensajes en esta conversación"
       transcript_subject: "Transcripción de la conversación"
+    survey:
+      response: "Please rate this conversation, %{link}"
+  contacts:
+    online:
+      delete: "%{contact_name} is Online, please try again later"
   integration_apps:
     slack:
       name: "Slack"

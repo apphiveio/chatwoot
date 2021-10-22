@@ -19,25 +19,32 @@
     },
     "LABELS": {
       "CONTACT": {
-        "TITLE": "Contact Labels",
-        "ERROR": "Couldn't update labels"
+        "TITLE": "Etykiety kontaktu",
+        "ERROR": "Nie można zaktualizować etykiet"
       },
       "CONVERSATION": {
-        "TITLE": "Conversation Labels",
-        "ADD_BUTTON": "Add Labels"
+        "TITLE": "Etykiety rozmowy",
+        "ADD_BUTTON": "Dodaj etykiety"
       },
       "LABEL_SELECT": {
-        "TITLE": "Add Labels",
-        "PLACEHOLDER": "Search labels",
-        "NO_RESULT": "No labels found"
+        "TITLE": "Dodaj etykiety",
+        "PLACEHOLDER": "Wyszukaj etykiety",
+        "NO_RESULT": "Nie znaleziono etykiet"
       }
     },
+    "MERGE_CONTACT": "Merge contact",
+    "CONTACT_ACTIONS": "Contact actions",
     "MUTE_CONTACT": "Wycisz rozmowę",
     "UNMUTE_CONTACT": "Wyłącz wyciszenie rozmowy",
     "MUTED_SUCCESS": "Ta rozmowa jest wyciszona na 6 godzin",
     "UNMUTED_SUCCESS": "Ta rozmowa nie jest wyciszona",
     "SEND_TRANSCRIPT": "Wyślij transkrypcję",
-    "EDIT_LABEL": "Edytuj"
+    "EDIT_LABEL": "Edytuj",
+    "SIDEBAR_SECTIONS": {
+      "CUSTOM_ATTRIBUTES": "Niestandardowe atrybuty",
+      "CONTACT_LABELS": "Etykiety kontaktu",
+      "PREVIOUS_CONVERSATIONS": "Poprzednie rozmowy"
+    }
   },
   "EDIT_CONTACT": {
     "BUTTON_LABEL": "Edytuj Kontakt",
@@ -48,6 +55,35 @@
     "BUTTON_LABEL": "Nowy kontakt",
     "TITLE": "Utwórz nowy kontakt",
     "DESC": "Dodaj podstawowe informacje o kontakcie."
+  },
+  "IMPORT_CONTACTS": {
+    "BUTTON_LABEL": "Import",
+    "TITLE": "Import Contacts",
+    "DESC": "Import contacts through a CSV file.",
+    "DOWNLOAD_LABEL": "Download a sample csv.",
+    "FORM": {
+      "LABEL": "CSV File",
+      "SUBMIT": "Import",
+      "CANCEL": "Anuluj"
+    },
+    "SUCCESS_MESSAGE": "Contacts saved successfully",
+    "ERROR_MESSAGE": "Wystąpił błąd, spróbuj ponownie"
+  },
+  "DELETE_CONTACT": {
+    "BUTTON_LABEL": "Delete Contact",
+    "TITLE": "Delete contact",
+    "DESC": "Delete contact details",
+    "CONFIRM": {
+      "TITLE": "Potwierdź usunięcie",
+      "MESSAGE": "Czy na pewno chcesz usunąć ",
+      "PLACE_HOLDER": "Please type {contactName} to confirm",
+      "YES": "Tak, usuń ",
+      "NO": "Nie, zachowaj "
+    },
+    "API": {
+      "SUCCESS_MESSAGE": "Contact deleted successfully",
+      "ERROR_MESSAGE": "Could not delete contact. Please try again later."
+    }
   },
   "CONTACT_FORM": {
     "FORM": {
@@ -131,13 +167,13 @@
   },
   "CONTACTS_PAGE": {
     "HEADER": "Kontakty",
-    "FIELDS": "Contact fields",
+    "FIELDS": "Pola kontaktu",
     "SEARCH_BUTTON": "Szukaj",
     "SEARCH_INPUT_PLACEHOLDER": "Szukaj kontaktów",
     "LIST": {
       "LOADING_MESSAGE": "Ładowanie kontaktów...",
       "404": "Brak kontaktów pasujących do Twojego wyszukiwania 🔍",
-      "NO_CONTACTS": "There are no available contacts",
+      "NO_CONTACTS": "Brak dostępnych kontaktów",
       "TABLE_HEADER": {
         "NAME": "Nazwisko",
         "PHONE_NUMBER": "Numer telefonu",
@@ -155,11 +191,11 @@
   "REMINDER": {
     "ADD_BUTTON": {
       "BUTTON": "Dodaj",
-      "TITLE": "Shift + Enter to create a task"
+      "TITLE": "Shift + Enter, aby utworzyć zadanie"
     },
     "FOOTER": {
-      "DUE_DATE": "Due date",
-      "LABEL_TITLE": "Set type"
+      "DUE_DATE": "Data zakończenia",
+      "LABEL_TITLE": "Ustaw typ"
     }
   },
   "NOTES": {
@@ -186,52 +222,54 @@
     }
   },
   "CUSTOM_ATTRIBUTES": {
-    "TITLE": "Niestandardowe atrybuty",
-    "BUTTON": "Add custom attribute",
+    "BUTTON": "Dodaj niestandardowy atrybut",
+    "NOT_AVAILABLE": "There are no custom attributes available for this contact.",
     "ADD": {
-      "TITLE": "Create custom attribute",
-      "DESC": "Add custom information to this contact."
+      "TITLE": "Dodaj niestandardowy atrybut",
+      "DESC": "Dodaj niestandardową informację do tego kontaktu."
     },
     "FORM": {
-      "CREATE": "Add attribute",
+      "CREATE": "Dodaj atrybut",
       "CANCEL": "Anuluj",
       "NAME": {
-        "LABEL": "Custom attribute name",
-        "PLACEHOLDER": "Eg: shopify id",
-        "ERROR": "Invalid custom attribute name"
+        "LABEL": "Nazwa atrybutu niestandardowego",
+        "PLACEHOLDER": "Np.: shopify id",
+        "ERROR": "Nieprawidłowa nazwa niestandardowego atrybutu"
       },
       "VALUE": {
-        "LABEL": "Attribute value",
-        "PLACEHOLDER": "Eg: 11901 "
+        "LABEL": "Wartość atrybutu",
+        "PLACEHOLDER": "Np.: 11901 "
       }
     }
   },
   "MERGE_CONTACTS": {
-    "TITLE": "Merge contacts",
-    "DESCRIPTION": "Merge contact is helpful when you have duplicated entries of the same contact. Merging action takes a primary contact and a child contact. After merging, all details in the primary contact will remain the same. If the primary contact doesn't have a field, then the value from the child contact will be used after merging. If a conflict happens, fields in primary contact will remain unaffected, but fields from secondary will be copied to the custom attributes in the primary contact.",
+    "TITLE": "Połącz kontakty",
+    "DESCRIPTION": "Merge contacts to combine two profiles into one, including all attributes and conversations. In case of conflict, the Primary contact’ s attributes will take precedence.",
     "PRIMARY": {
-      "TITLE": "Primary contact"
+      "TITLE": "Primary contact",
+      "HELP_LABEL": "To be kept"
     },
     "CHILD": {
       "TITLE": "Contact to merge",
-      "PLACEHOLDER": "Choose a contact"
+      "PLACEHOLDER": "Search for a contact",
+      "HELP_LABEL": "To be deleted"
     },
     "SUMMARY": {
       "TITLE": "Summary",
-      "DELETE_WARNING": "Contact of <strong>%{childContactName}</strong>will be deleted.",
+      "DELETE_WARNING": "Contact of <strong>%{childContactName}</strong> will be deleted.",
       "ATTRIBUTE_WARNING": "Contact details of <strong>%{childContactName}</strong> will be copied to <strong>%{primaryContactName}</strong>."
     },
     "SEARCH": {
       "ERROR": "ERROR_MESSAGE"
     },
     "FORM": {
-      "SUBMIT": " Merge contacts",
+      "SUBMIT": " Połącz kontakty",
       "CANCEL": "Anuluj",
       "CHILD_CONTACT": {
         "ERROR": "Select a child contact to merge"
       },
       "SUCCESS_MESSAGE": "Contact merged successfully",
-      "ERROR_MESSAGE": "Could not merge contcts, try again!"
+      "ERROR_MESSAGE": "Could not merge contacts, try again!"
     }
   }
 }

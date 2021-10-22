@@ -10,6 +10,7 @@
     "SEARCH": {
       "INPUT": "Cerca persone, Chat, risposte salvate .."
     },
+    "FILTER_ALL": "Tutti",
     "STATUS_TABS": [
       {
         "NAME": "Apri",
@@ -47,8 +48,12 @@
         "VALUE": "risolto"
       },
       {
-        "TEXT": "Bot",
-        "VALUE": "bot"
+        "TEXT": "In Attesa",
+        "VALUE": "pending"
+      },
+      {
+        "TEXT": "Posticipato",
+        "VALUE": "snoozed"
       }
     ],
     "ATTACHMENTS": {
@@ -77,10 +82,12 @@
         "CONTENT": "ha condiviso un url"
       }
     },
-    "RECEIVED_VIA_EMAIL": "Received via email",
-    "VIEW_TWEET_IN_TWITTER": "View tweet in Twitter",
-    "REPLY_TO_TWEET": "Reply to this tweet",
-    "NO_MESSAGES": "No Messages",
-    "NO_CONTENT": "No content available"
+    "RECEIVED_VIA_EMAIL": "Ricevuto via email",
+    "VIEW_TWEET_IN_TWITTER": "Visualizza tweet su Twitter",
+    "REPLY_TO_TWEET": "Rispondi a questo tweet",
+    "NO_MESSAGES": "Nessun Messaggio",
+    "NO_CONTENT": "Nessun contenuto disponibile",
+    "HIDE_QUOTED_TEXT": "Nascondi Testo Citato",
+    "SHOW_QUOTED_TEXT": "Mostra Testo Citato"
   }
 }

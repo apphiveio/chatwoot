@@ -32,12 +32,19 @@
         "NO_RESULT": "No labels found"
       }
     },
+    "MERGE_CONTACT": "Merge contact",
+    "CONTACT_ACTIONS": "Contact actions",
     "MUTE_CONTACT": "Ztlumit konverzaci",
     "UNMUTE_CONTACT": "Zrušit ztlumení konverzace",
     "MUTED_SUCCESS": "Tato konverzace je ztlumena na 6 hodin",
     "UNMUTED_SUCCESS": "Tato konverzace je odtlumena",
     "SEND_TRANSCRIPT": "Poslat přepis",
-    "EDIT_LABEL": "Upravit"
+    "EDIT_LABEL": "Upravit",
+    "SIDEBAR_SECTIONS": {
+      "CUSTOM_ATTRIBUTES": "Vlastní atributy",
+      "CONTACT_LABELS": "Contact Labels",
+      "PREVIOUS_CONVERSATIONS": "Předchozí konverzace"
+    }
   },
   "EDIT_CONTACT": {
     "BUTTON_LABEL": "Upravit kontakt",
@@ -48,6 +55,35 @@
     "BUTTON_LABEL": "Nový kontakt",
     "TITLE": "Vytvořit nový kontakt",
     "DESC": "Přidat základní informace o kontaktu."
+  },
+  "IMPORT_CONTACTS": {
+    "BUTTON_LABEL": "Import",
+    "TITLE": "Import Contacts",
+    "DESC": "Import contacts through a CSV file.",
+    "DOWNLOAD_LABEL": "Download a sample csv.",
+    "FORM": {
+      "LABEL": "CSV File",
+      "SUBMIT": "Import",
+      "CANCEL": "Zrušit"
+    },
+    "SUCCESS_MESSAGE": "Contacts saved successfully",
+    "ERROR_MESSAGE": "Došlo k chybě, zkuste to prosím znovu"
+  },
+  "DELETE_CONTACT": {
+    "BUTTON_LABEL": "Delete Contact",
+    "TITLE": "Delete contact",
+    "DESC": "Delete contact details",
+    "CONFIRM": {
+      "TITLE": "Potvrdit odstranění",
+      "MESSAGE": "Opravdu chcete odstranit ",
+      "PLACE_HOLDER": "Please type {contactName} to confirm",
+      "YES": "Ano, odstranit ",
+      "NO": "Ne, zachovat "
+    },
+    "API": {
+      "SUCCESS_MESSAGE": "Contact deleted successfully",
+      "ERROR_MESSAGE": "Could not delete contact. Please try again later."
+    }
   },
   "CONTACT_FORM": {
     "FORM": {
@@ -107,7 +143,7 @@
   },
   "NEW_CONVERSATION": {
     "BUTTON_LABEL": "Start conversation",
-    "TITLE": "New conversation",
+    "TITLE": "Nová konverzace",
     "DESC": "Start a new conversation by sending a new message.",
     "NO_INBOX": "Couldn't find an inbox to initiate a new conversation with this contact.",
     "FORM": {
@@ -186,8 +222,8 @@
     }
   },
   "CUSTOM_ATTRIBUTES": {
-    "TITLE": "Vlastní atributy",
     "BUTTON": "Add custom attribute",
+    "NOT_AVAILABLE": "There are no custom attributes available for this contact.",
     "ADD": {
       "TITLE": "Create custom attribute",
       "DESC": "Add custom information to this contact."
@@ -208,17 +244,19 @@
   },
   "MERGE_CONTACTS": {
     "TITLE": "Merge contacts",
-    "DESCRIPTION": "Merge contact is helpful when you have duplicated entries of the same contact. Merging action takes a primary contact and a child contact. After merging, all details in the primary contact will remain the same. If the primary contact doesn't have a field, then the value from the child contact will be used after merging. If a conflict happens, fields in primary contact will remain unaffected, but fields from secondary will be copied to the custom attributes in the primary contact.",
+    "DESCRIPTION": "Merge contacts to combine two profiles into one, including all attributes and conversations. In case of conflict, the Primary contact’ s attributes will take precedence.",
     "PRIMARY": {
-      "TITLE": "Primary contact"
+      "TITLE": "Primary contact",
+      "HELP_LABEL": "To be kept"
     },
     "CHILD": {
       "TITLE": "Contact to merge",
-      "PLACEHOLDER": "Choose a contact"
+      "PLACEHOLDER": "Search for a contact",
+      "HELP_LABEL": "To be deleted"
     },
     "SUMMARY": {
       "TITLE": "Summary",
-      "DELETE_WARNING": "Contact of <strong>%{childContactName}</strong>will be deleted.",
+      "DELETE_WARNING": "Contact of <strong>%{childContactName}</strong> will be deleted.",
       "ATTRIBUTE_WARNING": "Contact details of <strong>%{childContactName}</strong> will be copied to <strong>%{primaryContactName}</strong>."
     },
     "SEARCH": {
@@ -231,7 +269,7 @@
         "ERROR": "Select a child contact to merge"
       },
       "SUCCESS_MESSAGE": "Contact merged successfully",
-      "ERROR_MESSAGE": "Could not merge contcts, try again!"
+      "ERROR_MESSAGE": "Could not merge contacts, try again!"
     }
   }
 }

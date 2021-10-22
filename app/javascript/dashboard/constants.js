@@ -8,7 +8,9 @@ export default {
   STATUS_TYPE: {
     OPEN: 'open',
     RESOLVED: 'resolved',
-    BOT: 'bot',
+    PENDING: 'pending',
+    SNOOZED: 'snoozed',
+    ALL: 'all',
   },
 };
 export const DEFAULT_REDIRECT_URL = '/app/';
