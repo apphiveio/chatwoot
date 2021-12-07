@@ -144,4 +144,7 @@ export default {
     max-width: $space-two;
   }
 }
+.branding>a{
+  display:none !important;
+}
 </style>
