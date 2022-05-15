@@ -18,6 +18,9 @@ export default {
     hasAttachmentsEnabled() {
       return this.channelConfig.enabledFeatures.includes('attachments');
     },
+    hasEndConversationEnabled() {
+      return this.channelConfig.enabledFeatures.includes('end_conversation');
+    },
     preChatFormEnabled() {
       return window.chatwootWebChannel.preChatFormEnabled;
     },
@@ -25,10 +28,8 @@ export default {
       let requireEmail = false;
       let preChatMessage = '';
       const options = window.chatwootWebChannel.preChatFormOptions || {};
-      if (!this.isOnNewConversation) {
-        requireEmail = options.require_email;
-        preChatMessage = options.pre_chat_message;
-      }
+      requireEmail = options.require_email;
+      preChatMessage = options.pre_chat_message;
       return {
         requireEmail,
         preChatMessage,

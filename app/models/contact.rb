@@ -10,7 +10,6 @@
 #  last_activity_at      :datetime
 #  name                  :string
 #  phone_number          :string
-#  pubsub_token          :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  account_id            :integer          not null
@@ -19,13 +18,11 @@
 #
 #  index_contacts_on_account_id                   (account_id)
 #  index_contacts_on_phone_number_and_account_id  (phone_number,account_id)
-#  index_contacts_on_pubsub_token                 (pubsub_token) UNIQUE
 #  uniq_email_per_account_contact                 (email,account_id) UNIQUE
 #  uniq_identifier_per_account_contact            (identifier,account_id) UNIQUE
 #
 
 class Contact < ApplicationRecord
-  # TODO: remove the pubsub_token attribute from this model in future.
   include Avatarable
   include AvailabilityStatusable
   include Labelable
@@ -36,6 +33,7 @@ class Contact < ApplicationRecord
   validates :phone_number,
             allow_blank: true, uniqueness: { scope: [:account_id] },
             format: { with: /\+[1-9]\d{1,14}\z/, message: 'should be in e164 format' }
+  validates :name, length: { maximum: 255 }
 
   belongs_to :account
   has_many :conversations, dependent: :destroy_async
@@ -116,7 +114,6 @@ class Contact < ApplicationRecord
       identifier: identifier,
       name: name,
       phone_number: phone_number,
-      pubsub_token: pubsub_token,
       thumbnail: avatar_url,
       type: 'contact'
     }

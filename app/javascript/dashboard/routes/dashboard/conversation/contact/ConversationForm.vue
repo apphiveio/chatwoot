@@ -59,7 +59,29 @@
       </div>
       <div class="row">
         <div class="columns">
-          <label :class="{ error: $v.message.$error }">
+          <div v-if="isAnEmailInbox || isAnWebWidgetInbox">
+            <label>
+              {{ $t('NEW_CONVERSATION.FORM.MESSAGE.LABEL') }}
+              <reply-email-head
+                v-if="isAnEmailInbox"
+                :cc-emails.sync="ccEmails"
+                :bcc-emails.sync="bccEmails"
+              />
+              <label class="editor-wrap">
+                <woot-message-editor
+                  v-model="message"
+                  class="message-editor"
+                  :class="{ editor_warning: $v.message.$error }"
+                  :placeholder="$t('NEW_CONVERSATION.FORM.MESSAGE.PLACEHOLDER')"
+                  @blur="$v.message.$touch"
+                />
+                <span v-if="$v.message.$error" class="editor-warning__message">
+                  {{ $t('NEW_CONVERSATION.FORM.MESSAGE.ERROR') }}
+                </span>
+              </label>
+            </label>
+          </div>
+          <label v-else :class="{ error: $v.message.$error }">
             {{ $t('NEW_CONVERSATION.FORM.MESSAGE.LABEL') }}
             <textarea
               v-model="message"
@@ -89,6 +111,8 @@
 <script>
 import { mapGetters } from 'vuex';
 import Thumbnail from 'dashboard/components/widgets/Thumbnail';
+import WootMessageEditor from 'dashboard/components/widgets/WootWriter/Editor';
+import ReplyEmailHead from 'dashboard/components/widgets/conversation/ReplyEmailHead';
 
 import alertMixin from 'shared/mixins/alertMixin';
 import { INBOX_TYPES } from 'shared/mixins/inboxMixin';
@@ -98,6 +122,8 @@ import { required, requiredIf } from 'vuelidate/lib/validators';
 export default {
   components: {
     Thumbnail,
+    WootMessageEditor,
+    ReplyEmailHead,
   },
   mixins: [alertMixin],
   props: {
@@ -116,6 +142,8 @@ export default {
       subject: '',
       message: '',
       selectedInbox: '',
+      bccEmails: '',
+      ccEmails: '',
     };
   },
   validations: {
@@ -133,15 +161,25 @@ export default {
     ...mapGetters({
       uiFlags: 'contacts/getUIFlags',
       conversationsUiFlags: 'contactConversations/getUIFlags',
+      currentUser: 'getCurrentUser',
     }),
     getNewConversation() {
-      return {
+      const payload = {
         inboxId: this.targetInbox.inbox.id,
         sourceId: this.targetInbox.source_id,
         contactId: this.contact.id,
         message: { content: this.message },
         mailSubject: this.subject,
+        assigneeId: this.currentUser.id,
       };
+      if (this.ccEmails) {
+        payload.message.cc_emails = this.ccEmails;
+      }
+
+      if (this.bccEmails) {
+        payload.message.bcc_emails = this.bccEmails;
+      }
+      return payload;
     },
     targetInbox: {
       get() {
@@ -166,6 +204,12 @@ export default {
         this.selectedInbox.inbox.channel_type === INBOX_TYPES.EMAIL
       );
     },
+    isAnWebWidgetInbox() {
+      return (
+        this.selectedInbox &&
+        this.selectedInbox.inbox.channel_type === INBOX_TYPES.WEB
+      );
+    },
   },
   methods: {
     onCancel() {
@@ -174,7 +218,6 @@ export default {
     onSuccess() {
       this.$emit('success');
     },
-
     async handleSubmit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
@@ -182,9 +225,17 @@ export default {
       }
       try {
         const payload = this.getNewConversation;
-        await this.onSubmit(payload);
+        const data = await this.onSubmit(payload);
+        const action = {
+          type: 'link',
+          to: `/app/accounts/${data.account_id}/conversations/${data.id}`,
+          message: this.$t('NEW_CONVERSATION.FORM.GO_TO_CONVERSATION'),
+        };
         this.onSuccess();
-        this.showAlert(this.$t('NEW_CONVERSATION.FORM.SUCCESS_MESSAGE'));
+        this.showAlert(
+          this.$t('NEW_CONVERSATION.FORM.SUCCESS_MESSAGE'),
+          action
+        );
       } catch (error) {
         if (error instanceof ExceptionWithMessage) {
           this.showAlert(error.data);
