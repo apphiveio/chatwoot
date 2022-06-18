@@ -1,6 +1,32 @@
 <template>
   <div class="header-wrapper">
-
+    <div class="header-branding">
+      <div class="header">
+        <img
+          v-if="config.logo"
+          :src="config.logo"
+          class="logo"
+          :class="{ small: !config.isExpanded }"
+        />
+        <div v-if="!config.isExpanded">
+          <div class="title-block text-base font-medium">
+            <span class="mr-1">{{ config.websiteName }}</span>
+            <div v-if="config.isOnline" class="online-dot" />
+          </div>
+          <div class="text-xs mt-1 text-black-700">
+            {{ responseTime }}
+          </div>
+        </div>
+      </div>
+      <div v-if="config.isExpanded" class="header-expanded">
+        <h2 class="text-slate-900 mt-6 text-4xl mb-3 font-normal">
+          {{ config.welcomeHeading }}
+        </h2>
+        <p class="text-lg text-black-700 leading-normal">
+          {{ config.welcomeTagLine }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
