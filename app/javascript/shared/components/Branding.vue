@@ -15,6 +15,12 @@ const {
 
 export default {
   mixins: [globalConfigMixin],
+  props: {
+    disableBranding: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       globalConfig: {
