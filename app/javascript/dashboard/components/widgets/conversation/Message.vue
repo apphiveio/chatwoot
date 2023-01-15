@@ -15,7 +15,6 @@
           v-if="data.content"
           :message="message"
           :is-email="isEmailContentType"
-          :readable-time="readableTime"
           :display-quoted-button="displayQuotedButton"
         />
         <span
@@ -29,7 +28,6 @@
             <bubble-image
               v-if="attachment.file_type === 'image' && !hasImageError"
               :url="attachment.data_url"
-              :readable-time="readableTime"
               @error="onImageLoadError"
             />
             <audio v-else-if="attachment.file_type === 'audio'" controls>
@@ -38,7 +36,6 @@
             <bubble-video
               v-else-if="attachment.file_type === 'video'"
               :url="attachment.data_url"
-              :readable-time="readableTime"
             />
             <bubble-location
               v-else-if="attachment.file_type === 'location'"
@@ -46,11 +43,7 @@
               :longitude="attachment.coordinates_long"
               :name="attachment.fallback_title"
             />
-            <bubble-file
-              v-else
-              :url="attachment.data_url"
-              :readable-time="readableTime"
-            />
+            <bubble-file v-else :url="attachment.data_url" />
           </div>
         </div>
         <bubble-actions
@@ -59,14 +52,15 @@
           :story-sender="storySender"
           :story-id="storyId"
           :is-a-tweet="isATweet"
+          :is-a-whatsapp-channel="isAWhatsAppChannel"
           :has-instagram-story="hasInstagramStory"
           :is-email="isEmailContentType"
           :is-private="data.private"
           :message-type="data.message_type"
-          :readable-time="readableTime"
+          :message-status="status"
           :source-id="data.source_id"
           :inbox-id="data.inbox_id"
-          :message-read="showReadTicks"
+          :created-at="createdAt"
         />
       </div>
       <spinner v-if="isPending" size="tiny" />
@@ -117,8 +111,6 @@
 </template>
 <script>
 import messageFormatterMixin from 'shared/mixins/messageFormatterMixin';
-import timeMixin from '../../../mixins/time';
-
 import BubbleMailHead from './bubble/MailHead';
 import BubbleText from './bubble/Text';
 import BubbleImage from './bubble/Image';
@@ -147,7 +139,7 @@ export default {
     ContextMenu,
     Spinner,
   },
-  mixins: [alertMixin, timeMixin, messageFormatterMixin, contentTypeMixin],
+  mixins: [alertMixin, messageFormatterMixin, contentTypeMixin],
   props: {
     data: {
       type: Object,
@@ -157,11 +149,11 @@ export default {
       type: Boolean,
       default: false,
     },
-    hasInstagramStory: {
+    isAWhatsAppChannel: {
       type: Boolean,
       default: false,
     },
-    hasUserReadMessage: {
+    hasInstagramStory: {
       type: Boolean,
       default: false,
     },
@@ -231,6 +223,9 @@ export default {
     sender() {
       return this.data.sender || {};
     },
+    status() {
+      return this.data.status;
+    },
     storySender() {
       return this.contentAttributes.story_sender || null;
     },
@@ -264,11 +259,8 @@ export default {
         'has-tweet-menu': this.isATweet,
       };
     },
-    readableTime() {
-      return this.messageStamp(
-        this.contentAttributes.external_created_at || this.data.created_at,
-        'LLL d, h:mm a'
-      );
+    createdAt() {
+      return this.contentAttributes.external_created_at || this.data.created_at;
     },
     isBubble() {
       return [0, 1, 3].includes(this.data.message_type);
@@ -278,14 +270,6 @@ export default {
     },
     isOutgoing() {
       return this.data.message_type === MESSAGE_TYPE.OUTGOING;
-    },
-    showReadTicks() {
-      return (
-        (this.isOutgoing || this.isTemplate) &&
-        this.hasUserReadMessage &&
-        this.isWebWidgetInbox &&
-        !this.data.private
-      );
     },
     isTemplate() {
       return this.data.message_type === MESSAGE_TYPE.TEMPLATE;
